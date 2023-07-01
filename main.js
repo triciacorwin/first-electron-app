@@ -1,7 +1,7 @@
 // importing modules with CommmonJS module syntax
   // app: control your application's event lifecycle
   // BrowserWindow: create and manage app windows
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 // load your web page into a new BrowserWindow instance
@@ -12,7 +12,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
     }
   })
 
@@ -21,6 +21,7 @@ const createWindow = () => {
 
 // run function when app is ready (Mac)
 app.whenReady().then(() => {
+  ipcMain.handle('ping', () => 'pong')
   createWindow();
 
   app.on('activate', () => {
